@@ -1,0 +1,41 @@
+# Rust
+/target/
+Cargo.lock
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Environment & Secrets
+.env
+*.pem
+*.key
+
+# Logs
+logs/
+*.log
+
+# Data
+data/
+*.csv
+*.parquet
+*.json.gz
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Backup files
+*.bak
+*.backup
+*~
+
+# Benchmarks
+target/criterion/
+
+# Test coverage
+tarpaulin-report.html
+cobertura.xml

@@ -1,0 +1,55 @@
+[general]
+symbol = "BTCUSDT"
+base_currency = "BTC"
+quote_currency = "USDT"
+environment = "paper_trading"
+
+[strategy]
+name = "FrontRunVanilla"
+version = "1.0.0"
+enabled = true
+
+# Same signal parameters as production for testing
+imbalance_threshold = 3.0
+min_confirming_signals = 2
+lookback_window_ms = 5000
+
+# Same entry/exit as production
+take_profit_bps = 10.0
+stop_loss_bps = 5.0
+max_hold_time_ms = 5000
+
+[position_sizing]
+# Paper trading with same sizing as production
+base_notional_usd = 1000.0
+min_size_multiplier = 0.5
+max_size_multiplier = 2.0
+max_position_usd = 5000.0
+
+[risk]
+max_portfolio_exposure_usd = 10000.0
+max_daily_loss_usd = 500.0
+max_drawdown_pct = 10.0
+max_trades_per_hour = 30
+
+[exchange]
+name = "binance"
+testnet = false  # Use real market data for paper trading
+api_endpoint = "https://fapi.binance.com"
+ws_endpoint = "wss://fstream.binance.com"
+
+[latency]
+target_signal_to_order_ms = 100
+max_acceptable_latency_ms = 500
+ws_ping_interval_ms = 10000
+
+[logging]
+level = "debug"  # More verbose for paper trading
+output = "json"
+file_path = "./logs/paper_trading.log"
+max_file_size_mb = 100
+max_files = 10
+
+[metrics]
+prometheus_port = 9091  # Different port than production
+enabled = true

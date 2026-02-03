@@ -1,0 +1,107 @@
+[package]
+name = "front_run_vanilla"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+# Async runtime - full feature set for production use
+tokio = { version = "1.35", features = ["full"] }
+tokio-tungstenite = { version = "0.21", features = ["native-tls"] }
+futures-util = "0.3"
+
+# HTTP client with JSON support for REST API
+reqwest = { version = "0.11", features = ["json"] }
+
+# Serialization - core for parsing Binance messages
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+toml = "0.8"
+
+# Time handling with serialization support
+chrono = { version = "0.4", features = ["serde"] }
+
+# CRITICAL: Fixed-point arithmetic for money - never use f64 for prices/quantities
+rust_decimal = { version = "1.33", features = ["serde"] }
+rust_decimal_macros = "1.33"
+
+# Structured logging for production debugging
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter", "json"] }
+
+# Metrics for monitoring in production
+prometheus = "0.13"
+
+# High-performance concurrent data structures
+dashmap = "5.5"  # Lock-free concurrent HashMap - critical for orderbook
+crossbeam = "0.8"  # Lock-free channels and utilities
+
+# Error handling
+anyhow = "1.0"  # Flexible error handling
+thiserror = "1.0"  # Custom error types
+
+# Cryptography for HMAC-SHA256 signatures (Binance auth)
+hmac = "0.12"
+sha2 = "0.10"
+hex = "0.4"
+
+# Configuration management
+dotenv = "0.15"
+config = "0.13"
+
+# Statistics for signal calculation
+statrs = "0.16"
+
+# URL parsing and manipulation
+url = "2.5"
+
+# CLI parsing
+clap = { version = "4.4", features = ["derive"] }
+
+# Random number generation (for backtesting)
+rand = "0.8"
+
+[dev-dependencies]
+# Benchmarking with HTML reports
+criterion = { version = "0.5", features = ["html_reports"] }
+# HTTP mocking for testing
+mockito = "1.2"
+# Property-based testing
+proptest = "1.4"
+
+# Benchmark configuration
+[[bench]]
+name = "orderbook_bench"
+harness = false
+
+[[bench]]
+name = "signal_bench"
+harness = false
+
+[[bench]]
+name = "execution_bench"
+harness = false
+
+# Binary targets
+[[bin]]
+name = "live_trader"
+path = "src/bin/live_trader.rs"
+
+[[bin]]
+name = "backtester"
+path = "src/bin/backtester.rs"
+
+[[bin]]
+name = "data_collector"
+path = "src/bin/data_collector.rs"
+
+[[bin]]
+name = "paper_trader"
+path = "src/bin/paper_trader.rs"
+
+# Release optimizations - critical for HFT performance
+[profile.release]
+opt-level = 3           # Maximum optimization
+lto = true             # Link-time optimization
+codegen-units = 1      # Better optimization at cost of compile time
+panic = "abort"        # Slightly faster, no unwinding
+strip = true           # Remove debug symbols

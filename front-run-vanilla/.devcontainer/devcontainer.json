@@ -1,0 +1,57 @@
+{
+  "name": "Front Run Vanilla - HFT Trading System",
+  "image": "mcr.microsoft.com/devcontainers/rust:1-bullseye",
+  
+  "features": {
+    "ghcr.io/devcontainers/features/rust:1": {
+      "version": "latest",
+      "profile": "complete"
+    }
+  },
+  
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "rust-lang.rust-analyzer",
+        "vadimcn.vscode-lldb",
+        "serayuzgur.crates",
+        "tamasfe.even-better-toml",
+        "ms-azuretools.vscode-docker",
+        "redhat.vscode-yaml"
+      ],
+      "settings": {
+        "rust-analyzer.checkOnSave.command": "clippy",
+        "rust-analyzer.cargo.allFeatures": true,
+        "rust-analyzer.inlayHints.enable": true,
+        "editor.formatOnSave": true,
+        "editor.defaultFormatter": "rust-lang.rust-analyzer",
+        "[rust]": {
+          "editor.defaultFormatter": "rust-lang.rust-analyzer"
+        }
+      }
+    }
+  },
+  
+  "forwardPorts": [9090],
+  "portsAttributes": {
+    "9090": {
+      "label": "Prometheus Metrics",
+      "onAutoForward": "notify",
+      "protocol": "http"
+    }
+  },
+  
+  "postCreateCommand": "bash .devcontainer/post-create.sh",
+  
+  "remoteUser": "vscode",
+  
+  "remoteEnv": {
+    "RUST_BACKTRACE": "1",
+    "RUST_LOG": "info",
+    "CARGO_HOME": "/usr/local/cargo"
+  },
+  
+  "containerEnv": {
+    "TZ": "UTC"
+  }
+}
